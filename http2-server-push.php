@@ -18,7 +18,7 @@ Author URI:  http://davidmichaelross.com
  */
 function http2_link_template_redirect( $template ) {
 
-	ob_start( null, 0, PHP_OUTPUT_HANDLER_CLEANABLE );
+	ob_start();
 
 	return $template;
 
@@ -38,8 +38,7 @@ add_action( 'template_include', 'http2_link_template_redirect' );
 function http2_link_script_loader_src( $src, $handle ) {
 
 	if ( strpos( $src, home_url() ) !== false ) {
-		$relative_src = preg_replace( '/^http(s)?:\/\/[^\/]*/', '', $src );
-		header( 'Link: <' . $relative_src . '>; rel=preload; as=script', false );
+		http2_link_preload_header( $src, 'script' );
 	}
 
 	return $src;
@@ -60,12 +59,30 @@ add_filter( 'script_loader_src', 'http2_link_script_loader_src', 99, 2 );
 function http2_link_style_loader_src( $src, $handle ) {
 
 	if ( strpos( $src, home_url() ) !== false ) {
-		$relative_src = preg_replace( '/^http(s)?:\/\/[^\/]*/', '', $src );
-		header( 'Link: <' . $relative_src . '>; rel=preload; as=stylesheet', false );
+		http2_link_preload_header( $src, 'stylesheet' );
 	}
 
 	return $src;
 
 }
 
+/**
+ * @param string $src URL
+ * @return void
+ */
+function http2_link_preload_header( $src, $as = 'stylesheet') {
+	header( 'Link: <' . http2_link_url_to_relative_path( $src ) . '>; rel=preload; as=stylesheet', false );
+}
+
 add_filter( 'style_loader_src', 'http2_link_style_loader_src', 99, 2 );
+
+/**
+ * Convert an URL with authority to a relative path
+ *
+ * @param string $src URL
+ *
+ * @return string mixed relative path
+ */
+function http2_link_url_to_relative_path( $src ) {
+	return preg_replace( '/^http(s)?:\/\/[^\/]*/', '', $src );
+}
