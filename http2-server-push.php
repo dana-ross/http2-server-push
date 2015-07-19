@@ -13,18 +13,14 @@ Author URI:  http://davidmichaelross.com
  * Start an output buffer so this plugin can call header() later without errors
  *
  * @param string $template
- *
- * @return string
  */
 function http2_link_template_redirect( $template ) {
 
 	ob_start();
 
-	return $template;
-
 }
 
-add_action( 'template_include', 'http2_link_template_redirect' );
+add_action( 'template_redirect', 'http2_link_template_redirect' );
 
 /**
  * When rendering a <script> tag for an enqueued script, add a Link header signalling the HTTP/2 web server to
