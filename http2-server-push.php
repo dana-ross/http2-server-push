@@ -28,8 +28,18 @@ add_action( 'template_redirect', 'http2_link_template_redirect' );
  * @return void
  */
 function http2_link_preload_header( $src, $handle ) {
+
 	if ( strpos( $src, home_url() ) !== false ) {
-		header( 'Link: <' . esc_url( http2_link_url_to_relative_path( $src ) ) . '>; rel=preload; as=' . sanitize_html_class( http2_link_link_as( current_filter() ) ), false );
+
+		header(
+			sprintf(
+				'Link: <%s>; rel=preload; as=%s',
+				esc_url( http2_link_url_to_relative_path( $src ) ),
+				sanitize_html_class( http2_link_link_as( current_filter() ) )
+			)
+			, false
+		);
+
 	}
 
 	return $src;
