@@ -23,54 +23,20 @@ function http2_link_template_redirect( $template ) {
 add_action( 'template_redirect', 'http2_link_template_redirect' );
 
 /**
- * When rendering a <script> tag for an enqueued script, add a Link header signalling the HTTP/2 web server to
- * push this resource to the client
- *
- * @param string $src
- * @param string $handle
- *
- * @return string
- */
-function http2_link_script_loader_src( $src, $handle ) {
-
-	if ( strpos( $src, home_url() ) !== false ) {
-		http2_link_preload_header( $src, 'script' );
-	}
-
-	return $src;
-
-}
-
-add_filter( 'script_loader_src', 'http2_link_script_loader_src', 99, 2 );
-
-/**
- * When rendering a <link> tag for an enqueued stylesheet, add a Link header signalling the HTTP/2 web server to
- * push this resource to the client
- *
- * @param string $src
- * @param string $handle
- *
- * @return string
- */
-function http2_link_style_loader_src( $src, $handle ) {
-
-	if ( strpos( $src, home_url() ) !== false ) {
-		http2_link_preload_header( $src, 'stylesheet' );
-	}
-
-	return $src;
-
-}
-
-/**
  * @param string $src URL
+ *
  * @return void
  */
-function http2_link_preload_header( $src, $as = 'stylesheet') {
-	header( 'Link: <' . http2_link_url_to_relative_path( $src ) . '>; rel=preload; as=stylesheet', false );
+function http2_link_preload_header( $src, $handle ) {
+	if ( strpos( $src, home_url() ) !== false ) {
+		header( 'Link: <' . esc_url( http2_link_url_to_relative_path( $src ) ) . '>; rel=preload; as=' . sanitize_html_class( http2_link_link_as( current_filter() ) ), false );
+	}
+
+	return $src;
 }
 
-add_filter( 'style_loader_src', 'http2_link_style_loader_src', 99, 2 );
+add_filter( 'script_loader_src', 'http2_link_preload_header', 99, 2 );
+add_filter( 'style_loader_src', 'http2_link_preload_header', 99, 2 );
 
 /**
  * Convert an URL with authority to a relative path
@@ -81,4 +47,13 @@ add_filter( 'style_loader_src', 'http2_link_style_loader_src', 99, 2 );
  */
 function http2_link_url_to_relative_path( $src ) {
 	return preg_replace( '/^http(s)?:\/\/[^\/]*/', '', $src );
+}
+
+/**
+ * @param string $current_hook
+ *
+ * @return string
+ */
+function http2_link_link_as( $current_hook ) {
+	return 'style_loader_src' === $current_hook ? 'stylesheet' : 'script';
 }
