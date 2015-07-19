@@ -50,9 +50,11 @@ function http2_link_url_to_relative_path( $src ) {
 }
 
 /**
- * @param string $current_hook
+ * Maps a WordPress hook to an "as" parameter in the Link header
  *
- * @return string
+ * @param string $current_hook pass current_filter()
+ *
+ * @return string 'stylesheet' or 'script'
  */
 function http2_link_link_as( $current_hook ) {
 	return 'style_loader_src' === $current_hook ? 'stylesheet' : 'script';
