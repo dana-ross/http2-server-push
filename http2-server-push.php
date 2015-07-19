@@ -1,7 +1,7 @@
 <?php
 
 /*
-Plugin Name: http/2 link 
+Plugin Name: http/2 server push 
 */
 
 $http2_link_buffer = array();
