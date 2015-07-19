@@ -1,4 +1,5 @@
-# HTTP/2 Server Push for WordPress [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
+# HTTP/2 Server Push for WordPress
+[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
 Enables server push for local JavaScript and CSS resources enqueued in the page. Plugins & themes that
 output tags directly in the page markup won't be affected.
