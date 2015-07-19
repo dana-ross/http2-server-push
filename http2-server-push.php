@@ -1,7 +1,12 @@
 <?php
 
 /*
-Plugin Name: http/2 server push 
+Plugin Name: http/2 server push
+Plugin URI:  https://github.com/daveross/http2-server-push
+Description: EXPERIMENTAL implementation of HTTP/2 server push (tested with nghttpx)
+Version:     0.1
+Author:      David Michael Ross
+Author URI:  http://davidmichaelross.com
 */
 
 add_filter( 'script_loader_src', 'http2_link_script_loader_src', 99, 2);
