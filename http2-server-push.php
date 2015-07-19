@@ -9,18 +9,8 @@ Author:      David Michael Ross
 Author URI:  http://davidmichaelross.com
 */
 
-/**
- * Start an output buffer so this plugin can call header() later without errors
- *
- * @param string $template
- */
-function http2_link_template_redirect( $template ) {
-
-	ob_start();
-
-}
-
-add_action( 'template_redirect', 'http2_link_template_redirect' );
+// Start an output buffer so this plugin can call header() later without errors
+add_action( 'template_redirect', 'ob_start' );
 
 /**
  * @param string $src URL
