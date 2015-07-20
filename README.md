@@ -6,7 +6,7 @@ HTTP/2 is the newest version of the HTTP protocol that powers the Web. Based on 
 This plugin enables server push for local JavaScript and CSS resources enqueued in the page. Plugins & themes that
 output tags directly in the page markup won't be affected.
 
-Tested with [nghttpx](https://nghttp2.org/documentation/nghttpx-howto.html) and [h2o](https://h2o.examp1e.net).
+Tested with [nghttpx](https://nghttp2.org/documentation/nghttpx-howto.html) and [h2o](https://h2o.examp1e.net). LiteSpeed and OpenLiteSpeed do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
 
 ## License
 [MIT](http://daveross.mit-license.org/)
