@@ -21,14 +21,20 @@ function http2_link_preload_header( $src ) {
 
 	if ( strpos( $src, home_url() ) !== false ) {
 
-		header(
-			sprintf(
-				'Link: <%s>; rel=preload; as=%s',
-				esc_url( http2_link_url_to_relative_path( $src ) ),
-				sanitize_html_class( http2_link_link_as( current_filter() ) )
-			)
-			, false
-		);
+		$preload_src = apply_filters( 'http2_link_preload_src', $src );
+
+		if( ! empty( $preload_src ) ) {
+
+			header(
+				sprintf(
+					'Link: <%s>; rel=preload; as=%s',
+					esc_url( http2_link_url_to_relative_path( $preload_src ) ),
+					sanitize_html_class( http2_link_link_as( current_filter() ) )
+				)
+				, false
+			);
+
+		}
 
 	}
 
