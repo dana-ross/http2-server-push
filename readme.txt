@@ -1,14 +1,14 @@
 === Plugin Name ===
 Contributors: csixty4
 Donate link: http://www.giffordcatshelter.org/
-Tags: http2, performance
-Requires at least: 4.0
+Tags: http2, performance, prefetch
+Requires at least: 3.0
 Tested up to: 4.2.2
 Stable tag: 1.0
 License: MIT
 License URI: http://daveross.mit-license.org/
 
-This plugin enables HTTP/2 server push for local JavaScript and CSS resources enqueued in the page. Plugins & themes that output tags directly in the page markup won't be affected.
+Enables HTTP/2 server push for local JavaScript and CSS resources enqueued in the page. Plugins & themes that output tags directly in the page markup won't be affected.
 
 Tested with [nghttpx](https://www.nghttp2.org/documentation/nghttpx.1.html) and [h2o](https://h2o.examp1e.net/). [LiteSpeed](http://www.litespeedtech.com/products/litespeed-web-server/overview) and [OpenLiteSpeed](http://open.litespeedtech.com/mediawiki/) do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
 

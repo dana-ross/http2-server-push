@@ -3,7 +3,7 @@
 /*
 Plugin Name: HTTP/2 Server Push
 Plugin URI:  https://github.com/daveross/http2-server-push
-Description: EXPERIMENTAL implementation of HTTP/2 server push (tested with nghttpx)
+Description: Enables HTTP/2 server push for local JavaScript and CSS resources enqueued in the page.
 Version:     1.0
 Author:      David Michael Ross
 Author URI:  http://davidmichaelross.com
