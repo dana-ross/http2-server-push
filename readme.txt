@@ -40,7 +40,7 @@ LiteSpeed doesn't currently support server push. But I've been in touch with the
 
 There are a couple ways:
 
-1. [nghttp](https://www.nghttp2.org/documentation/nghttp.1.html) is an HTTP/2 client that ships with the nghttp2 suite. ```nghttp -v http://example.com``` will show all the HTTP/2 signalling packets, HTTP headers, content, and resources sent from the server in a single request. You can see ```PUSH PROMISE` signals from the server and the pushed resources after the main page is sent.
+1. [nghttp](https://www.nghttp2.org/documentation/nghttp.1.html) is an HTTP/2 client that ships with the nghttp2 suite. ```nghttp -v http://example.com``` will show all the HTTP/2 signalling packets, HTTP headers, content, and resources sent from the server in a single request. You can see ```PUSH PROMISE``` signals from the server and the pushed resources after the main page is sent.
 2. In Google Chrome, [chrome://net-internals/#spdy](chrome://net-internals/#spdy) will show a history of server connections from the browser. Clicking on a connection will show the discussion between the browser and the server. Within that text, you can see ```PUSH PROMISE``` packets and the pushed resources.
 
 = How can I help with development and testing? =
