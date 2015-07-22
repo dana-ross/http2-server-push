@@ -17,7 +17,7 @@ add_action( 'template_redirect', 'ob_start' );
  *
  * @return void
  */
-function http2_link_preload_header( $src, $handle ) {
+function http2_link_preload_header( $src ) {
 
 	if ( strpos( $src, home_url() ) !== false ) {
 
@@ -35,8 +35,8 @@ function http2_link_preload_header( $src, $handle ) {
 	return $src;
 }
 
-add_filter( 'script_loader_src', 'http2_link_preload_header', 99, 2 );
-add_filter( 'style_loader_src', 'http2_link_preload_header', 99, 2 );
+add_filter( 'script_loader_src', 'http2_link_preload_header', 99, 1 );
+add_filter( 'style_loader_src', 'http2_link_preload_header', 99, 1 );
 
 /**
  * Convert an URL with authority to a relative path
