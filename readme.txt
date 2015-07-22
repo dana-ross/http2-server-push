@@ -12,7 +12,7 @@ Enables HTTP/2 server push for local JavaScript and CSS resources.
 
 == Description ==
 
-HTTP/2 is the new generation of the venerable HTTP protocol that powers the web. HTTP/2 is a binary protocol enabling multiple streams of data over a single connection. Among its most powerful features is *server push*, a way for web servers to send resources to the browser before it even realizes it needs them. This avoids the usual HTTP request/response cycle which needs to be repeated for every script or stylesheet on a page.
+HTTP/2 is the new generation of the venerable HTTP protocol that powers the web. Among its most powerful features is *server push*, a way for web servers to send resources to the browser before it even realizes it needs them. This avoids the usual HTTP request/response cycle which happened for every script or stylesheet on a page.
 
 This plugin enables WordPress to send a ```Link:<...> rel="prefetch"``` header for every enqueued script and style as WordPress outputs them into the page source. Unfortunately, it can't help plugins and themes that output their scripts directly into the page itself, but these will continue to work as they always have.
 
@@ -28,7 +28,7 @@ Download the latest HTTP/2 Server Push plugin archive from wordpress.org. Unzip 
 
 == Frequently Asked Questions ==
 
-= What if my web server doesn't support HTTP/2 or *server push*? =
+= What if my web server doesn't support HTTP/2 or "server push"? =
 
 Server push is triggered by the same mechanism as *link prefetching*, which almost all major modern browsers support over HTTP 1.x. So even if you can't take advantage of HTTP/2's features, people visiting your site may still get a better experience from prefetching.
 
