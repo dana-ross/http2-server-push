@@ -8,15 +8,15 @@ Stable tag: 1.0
 License: MIT
 License URI: http://daveross.mit-license.org/
 
-Enables HTTP/2 server push for local JavaScript and CSS resources enqueued in the page. Plugins & themes that output tags directly in the page markup won't be affected.
-
-Tested with [nghttpx](https://www.nghttp2.org/documentation/nghttpx.1.html) and [h2o](https://h2o.examp1e.net/). [LiteSpeed](http://www.litespeedtech.com/products/litespeed-web-server/overview) and [OpenLiteSpeed](http://open.litespeedtech.com/mediawiki/) do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
+Enables HTTP/2 server push for local JavaScript and CSS resources.
 
 == Description ==
 
 HTTP/2 is the new generation of the venerable HTTP protocol that powers the web. HTTP/2 is a binary protocol enabling multiple streams of data over a single connection. Among its most powerful features is *server push*, a way for web servers to send resources to the browser before it even realizes it needs them. This avoids the usual HTTP request/response cycle which needs to be repeated for every script or stylesheet on a page.
 
 This plugin enables WordPress to send a ```Link:<...> rel="prefetch"``` header for every enqueued script and style as WordPress outputs them into the page source. Unfortunately, it can't help plugins and themes that output their scripts directly into the page itself, but these will continue to work as they always have.
+
+Tested with [nghttpx](https://www.nghttp2.org/documentation/nghttpx.1.html) and [h2o](https://h2o.examp1e.net/). [LiteSpeed](http://www.litespeedtech.com/products/litespeed-web-server/overview) and [OpenLiteSpeed](http://open.litespeedtech.com/mediawiki/) do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
 
 == Installation ==
 
