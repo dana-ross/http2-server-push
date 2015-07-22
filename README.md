@@ -1,5 +1,4 @@
 # HTTP/2 Server Push for WordPress
-[![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
 HTTP/2 is the newest version of the HTTP protocol that powers the Web. Based on the SPDY protocol from Google, it uses multiple binary *streams* to transmit more than one file over one connection at the same time. *Server Push* is how an HTTP/2 server starts sending additional files, such as JavaScript and CSS, to the browser before the browser realizes it needs them.
 
