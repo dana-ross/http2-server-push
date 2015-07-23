@@ -16,7 +16,9 @@ HTTP/2 is the new generation of the venerable HTTP protocol that powers the web.
 
 This plugin enables WordPress to send a ```Link:<...> rel="prefetch"``` header for every enqueued script and style as WordPress outputs them into the page source. Unfortunately, it can't help plugins and themes that output their scripts directly into the page itself, but these will continue to work as they always have.
 
-Tested with [nghttpx](https://www.nghttp2.org/documentation/nghttpx.1.html) and [h2o](https://h2o.examp1e.net/). [LiteSpeed](http://www.litespeedtech.com/products/litespeed-web-server/overview) and [OpenLiteSpeed](http://open.litespeedtech.com/mediawiki/) do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
+Requires a web server that supports HTTP/2. Tested with [nghttpx](https://www.nghttp2.org/documentation/nghttpx.1.html) and [h2o](https://h2o.examp1e.net/). [LiteSpeed](http://www.litespeedtech.com/products/litespeed-web-server/overview) and [OpenLiteSpeed](http://open.litespeedtech.com/mediawiki/) do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
+
+Nginx and Apache do not currently support HTTP/2, although [nghttpx can be set up as a proxy](https://www.tollmanz.com/http2-nghttp2-nginx-tls/) between browsers and nginx.
 
 == Installation ==
 
