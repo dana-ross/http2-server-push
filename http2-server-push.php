@@ -10,7 +10,7 @@ Author URI:  http://davidmichaelross.com
 */
 
 // Start an output buffer so this plugin can call header() later without errors
-add_action( 'template_redirect', 'ob_start' );
+add_action( 'template_redirect', 'http2_link_preload_header' );
 
 /**
  * @param string $src URL
