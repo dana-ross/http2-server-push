@@ -3,8 +3,8 @@ Contributors: csixty4
 Donate link: http://www.giffordcatshelter.org/
 Tags: http2, performance, prefetch
 Requires at least: 3.0
-Tested up to: 4.2.2
-Stable tag: 1.0
+Tested up to: 4.5.1
+Stable tag: 1.1
 License: MIT
 License URI: http://daveross.mit-license.org/
 
@@ -55,5 +55,8 @@ The source code is available at [https://github.com/daveross/http2-server-push](
 
 = 1.0 =
 * Initial release
+
+= 1.1 =
+* Fix errors starting the output buffer through the template_redirect action
 
 == Upgrade Notice ==

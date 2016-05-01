@@ -4,13 +4,21 @@
 Plugin Name: HTTP/2 Server Push
 Plugin URI:  https://github.com/daveross/http2-server-push
 Description: Enables HTTP/2 server push for local JavaScript and CSS resources enqueued in the page.
-Version:     1.0
+Version:     1.1
 Author:      David Michael Ross
 Author URI:  http://davidmichaelross.com
 */
 
-// Start an output buffer so this plugin can call header() later without errors
-add_action( 'template_redirect', 'ob_start' );
+/**
+ * Start an output buffer so this plugin can call header() later without errors.
+ * Need to use a function here instead of calling ob_start in the template_redirect
+ * action as WordPress will pass an empty string as the first (only?) parameter
+ * and PHP will try to use that as a function name.
+ */
+function http2_ob_start() {
+    ob_start();
+}
+add_action( 'template_redirect', 'http2_ob_start' );
 
 /**
  * @param string $src URL
