@@ -18,7 +18,7 @@ Author URI:  http://davidmichaelross.com
 function http2_ob_start() {
     ob_start();
 }
-add_action( 'template_redirect', 'http2_ob_start' );
+add_action( 'init', 'http2_ob_start' );
 
 /**
  * @param string $src URL
