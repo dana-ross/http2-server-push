@@ -32,10 +32,6 @@ Download the latest HTTP/2 Server Push plugin archive from wordpress.org. Unzip 
 
 Server push is triggered by the same mechanism as *link prefetching*, which almost all major modern browsers support over HTTP 1.x. So even if you can't take advantage of HTTP/2's features, people visiting your site may still get a better experience from prefetching.
 
-= Does this work with LiteSpeed? =
-
-LiteSpeed doesn't currently support server push. But I've been in touch with the LiteSpeed team, and they've confirmed this plugin should just work with their server when support is added.
-
 = How do I know if this is working? =
 
 There are a couple ways:
