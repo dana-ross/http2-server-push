@@ -59,4 +59,7 @@ The source code is available at [https://github.com/daveross/http2-server-push](
 = 1.1 =
 * Fix errors starting the output buffer through the template_redirect action
 
+= 2.0 =
+* Support for protocol-relative URLs
+
 == Upgrade Notice ==
