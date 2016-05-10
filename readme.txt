@@ -53,4 +53,7 @@ The source code is available at [https://github.com/daveross/http2-server-push](
 = 1.1 =
 * Fix errors starting the output buffer through the template_redirect action
 
+= 2.0 =
+* Implemented "resource hints" to encourage preload/prefetch behavior when HTTP/2 support is lacking.
+
 == Upgrade Notice ==
