@@ -11,7 +11,7 @@ Author URI:  http://davidmichaelross.com
 
 // Global variables to keep track of resource URLs
 $http2_script_srcs = array();
-$http2_style_srcs = array();
+$http2_stylesheet_srcs = array();
 
 /**
  * Start an output buffer so this plugin can call header() later without errors.
@@ -46,13 +46,8 @@ function http2_link_preload_header( $src ) {
 				, false
 			);
 			
-			if('script' === http2_link_link_as( current_filter() ) ) {
-				$GLOBALS['http2_script_srcs'][] = http2_link_url_to_relative_path( $preload_src );
-			}
-			else {
-				$GLOBALS['http2_style_srcs'][] = http2_link_url_to_relative_path( $preload_src );
-			}
-
+			$GLOBALS['http2_' . http2_link_resource_hint_as( current_filter() ) . '_srcs'][] = http2_link_url_to_relative_path( $preload_src );
+		
 		}
 
 	}
@@ -98,4 +93,15 @@ function http2_link_url_to_relative_path( $src ) {
  */
 function http2_link_link_as( $current_hook ) {
 	return 'style_loader_src' === $current_hook ? 'stylesheet' : 'script';
+}
+
+/**
+ * Maps a WordPress hook to an "as" parameter in a resource hint
+ *
+ * @param string $current_hook pass current_filter()
+ *
+ * @return string 'style' or 'script'
+ */
+function http2_link_resource_hint_as( $current_hook ) {
+	return 'style_loader_src' === $current_hook ? 'style' : 'script';
 }
