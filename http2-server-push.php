@@ -9,6 +9,10 @@ Author:      David Michael Ross
 Author URI:  http://davidmichaelross.com
 */
 
+// Global variables to keep track of resource URLs
+$http2_script_srcs = array();
+$http2_style_srcs = array();
+
 /**
  * Start an output buffer so this plugin can call header() later without errors.
  * Need to use a function here instead of calling ob_start in the template_redirect
@@ -41,6 +45,13 @@ function http2_link_preload_header( $src ) {
 				)
 				, false
 			);
+			
+			if('script' === http2_link_link_as( current_filter() ) ) {
+				$GLOBALS['http2_script_srcs'][] = http2_link_url_to_relative_path( $preload_src );
+			}
+			else {
+				$GLOBALS['http2_style_srcs'][] = http2_link_url_to_relative_path( $preload_src );
+			}
 
 		}
 
@@ -51,6 +62,21 @@ function http2_link_preload_header( $src ) {
 
 add_filter( 'script_loader_src', 'http2_link_preload_header', 99, 1 );
 add_filter( 'style_loader_src', 'http2_link_preload_header', 99, 1 );
+
+/**
+ * Render "resource hints" in the <head> section of the page. These encourage preload/prefetch behavior
+ * when HTTP/2 support is lacking.
+ */
+function http2_resource_hints() {
+	$resource_types = array('script', 'style');
+	array_walk( $resource_types, function( $resource_type ) {
+		array_walk( $GLOBALS["http2_{$resource_type}_srcs"], function( $src ) use ( $resource_type ) {
+			printf( '<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html( $resource_type ) );
+		});	
+	});
+
+}
+add_action( 'wp_head', 'http2_resource_hints', 99, 1);
 
 /**
  * Convert an URL with authority to a relative path
