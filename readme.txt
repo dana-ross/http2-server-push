@@ -16,9 +16,7 @@ HTTP/2 is the new generation of the venerable HTTP protocol that powers the web.
 
 This plugin enables WordPress to send a ```Link:<...> rel="prefetch"``` header for every enqueued script and style as WordPress outputs them into the page source. Unfortunately, it can't help plugins and themes that output their scripts directly into the page itself, but these will continue to work as they always have.
 
-Requires a web server that supports HTTP/2. Tested with [nghttpx](https://www.nghttp2.org/documentation/nghttpx.1.html) and [h2o](https://h2o.examp1e.net/). [LiteSpeed](http://www.litespeedtech.com/products/litespeed-web-server/overview) and [OpenLiteSpeed](http://open.litespeedtech.com/mediawiki/) do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
-
-Nginx and Apache do not currently support HTTP/2, although [nghttpx can be set up as a proxy](https://www.tollmanz.com/http2-nghttp2-nginx-tls/) between browsers and nginx.
+Requires a web server that supports HTTP/2.
 
 == Installation ==
 
@@ -33,10 +31,6 @@ Download the latest HTTP/2 Server Push plugin archive from wordpress.org. Unzip 
 = What if my web server doesn't support HTTP/2 or "server push"? =
 
 Server push is triggered by the same mechanism as *link prefetching*, which almost all major modern browsers support over HTTP 1.x. So even if you can't take advantage of HTTP/2's features, people visiting your site may still get a better experience from prefetching.
-
-= Does this work with LiteSpeed? =
-
-LiteSpeed doesn't currently support server push. But I've been in touch with the LiteSpeed team, and they've confirmed this plugin should just work with their server when support is added.
 
 = How do I know if this is working? =
 
@@ -61,5 +55,6 @@ The source code is available at [https://github.com/daveross/http2-server-push](
 
 = 2.0 =
 * Support for protocol-relative URLs
+* Implemented "resource hints" to encourage preload/prefetch behavior when HTTP/2 support is lacking.
 
 == Upgrade Notice ==
