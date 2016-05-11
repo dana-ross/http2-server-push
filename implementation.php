@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 // Global variables to keep track of resource URLs
 $http2_script_srcs = array();
@@ -19,13 +19,13 @@ function http2_ob_start() {
  *
  * @return void
  */
-function http2_link_preload_header( $src ) {
+function http2_link_preload_header($src) {
 
-	if ( strpos( $src, home_url() ) !== false ) {
+    if (strpos($src, home_url()) !== false) {
 
-		$preload_src = apply_filters( 'http2_link_preload_src', $src );
+        $preload_src = apply_filters('http2_link_preload_src', $src);
 
-		if( ! empty( $preload_src ) ) {
+        if (!empty($preload_src)) {
 
 			header(
 				sprintf(
@@ -40,9 +40,9 @@ function http2_link_preload_header( $src ) {
 		
 		}
 
-	}
+    }
 
-	return $src;
+    return $src;
 }
 
 /**
@@ -66,8 +66,8 @@ function http2_resource_hints() {
  *
  * @return string mixed relative path
  */
-function http2_link_url_to_relative_path( $src ) {
-	return preg_replace( '/^http(s)?:\/\/[^\/]*/', '', untrailingslashit( $src ) );
+function http2_link_url_to_relative_path($src) {
+    return '//' === substr($src, 0, 2) ? preg_replace('/^\/\/([^\/]*)\/?/', '/', untrailingslashit($src)) : preg_replace('/^http(s)?:\/\/[^\/]*/', '', untrailingslashit($src));
 }
 
 /**
