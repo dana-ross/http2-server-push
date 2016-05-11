@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 /*
 Plugin Name: HTTP/2 Server Push
@@ -22,20 +22,20 @@ $http2_stylesheet_srcs = array();
 function http2_ob_start() {
     ob_start();
 }
-add_action( 'init', 'http2_ob_start' );
+add_action('init', 'http2_ob_start');
 
 /**
  * @param string $src URL
  *
  * @return void
  */
-function http2_link_preload_header( $src ) {
+function http2_link_preload_header($src) {
 
-	if ( strpos( $src, home_url() ) !== false ) {
+    if (strpos($src, home_url()) !== false) {
 
-		$preload_src = apply_filters( 'http2_link_preload_src', $src );
+        $preload_src = apply_filters('http2_link_preload_src', $src);
 
-		if( ! empty( $preload_src ) ) {
+        if (!empty($preload_src)) {
 
 			header(
 				sprintf(
@@ -50,13 +50,13 @@ function http2_link_preload_header( $src ) {
 		
 		}
 
-	}
+    }
 
-	return $src;
+    return $src;
 }
 
-add_filter( 'script_loader_src', 'http2_link_preload_header', 99, 1 );
-add_filter( 'style_loader_src', 'http2_link_preload_header', 99, 1 );
+add_filter('script_loader_src', 'http2_link_preload_header', 99, 1);
+add_filter('style_loader_src', 'http2_link_preload_header', 99, 1);
 
 /**
  * Render "resource hints" in the <head> section of the page. These encourage preload/prefetch behavior
@@ -80,8 +80,8 @@ add_action( 'wp_head', 'http2_resource_hints', 99, 1);
  *
  * @return string mixed relative path
  */
-function http2_link_url_to_relative_path( $src ) {
-	return preg_replace( '/^http(s)?:\/\/[^\/]*/', '', $src );
+function http2_link_url_to_relative_path($src) {
+    return '//' === substr($src, 0, 2) ? preg_replace('/^\/\/([^\/]*)\//', '/', $src) : preg_replace('/^http(s)?:\/\/[^\/]*/', '', $src);
 }
 
 /**
