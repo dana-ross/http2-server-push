@@ -1,4 +1,4 @@
-<?php
+<?php 
 /*
 Plugin Name: HTTP/2 Server Push
 Plugin URI:  https://github.com/daveross/http2-server-push
