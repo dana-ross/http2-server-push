@@ -4,7 +4,7 @@
 Plugin Name: HTTP/2 Server Push
 Plugin URI:  https://github.com/daveross/http2-server-push
 Description: Enables HTTP/2 server push for local JavaScript and CSS resources enqueued in the page.
-Version:     1.1
+Version:     1.2
 Author:      David Michael Ross
 Author URI:  http://davidmichaelross.com
 */
@@ -41,7 +41,7 @@ function http2_link_preload_header($src) {
 				sprintf(
 					'Link: <%s>; rel=preload; as=%s',
 					esc_url( http2_link_url_to_relative_path( $preload_src ) ),
-					sanitize_html_class( http2_link_link_as( current_filter() ) )
+					sanitize_html_class( http2_link_resource_hint_as( current_filter() ) )
 				)
 				, false
 			);
@@ -82,17 +82,6 @@ add_action( 'wp_head', 'http2_resource_hints', 99, 1);
  */
 function http2_link_url_to_relative_path($src) {
     return '//' === substr($src, 0, 2) ? preg_replace('/^\/\/([^\/]*)\//', '/', $src) : preg_replace('/^http(s)?:\/\/[^\/]*/', '', $src);
-}
-
-/**
- * Maps a WordPress hook to an "as" parameter in the Link header
- *
- * @param string $current_hook pass current_filter()
- *
- * @return string 'stylesheet' or 'script'
- */
-function http2_link_link_as( $current_hook ) {
-	return 'style_loader_src' === $current_hook ? 'stylesheet' : 'script';
 }
 
 /**
