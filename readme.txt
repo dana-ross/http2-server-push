@@ -72,6 +72,7 @@ The source code is available at [https://github.com/daveross/http2-server-push](
 = 1.3 =
 * Doesn't render resource hints when WordPress native support is present
 * No longer pushes assets on admin pages
+* Limits HTTP/2 Server Push headers to 4k to help alleviate 520 errors when used with Cloudflare
 
 
 == Upgrade Notice ==
