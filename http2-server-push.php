@@ -4,7 +4,7 @@
 Plugin Name: HTTP/2 Server Push
 Plugin URI:  https://github.com/daveross/http2-server-push
 Description: Enables HTTP/2 server push for local JavaScript and CSS resources enqueued in the page.
-Version:     1.2
+Version:     1.3
 Author:      David Michael Ross
 Author URI:  http://davidmichaelross.com
 */
@@ -12,6 +12,16 @@ Author URI:  http://davidmichaelross.com
 // Global variables to keep track of resource URLs
 $http2_script_srcs = array();
 $http2_stylesheet_srcs = array();
+
+/**
+ * Determine if the plugin should render its own resource hints, or defer to WordPress.
+ * WordPress natively supports resource hints since 4.6. Can be overridden with
+ * 'http2_render_resource_hints' filter.
+ * @return boolean true if the plugin should render resource hints.
+ */
+function http2_should_render_prefetch_headers() {
+	return apply_filters('http2_render_resource_hints', !function_exists( 'wp_resource_hints' ) );
+}
 
 /**
  * Start an output buffer so this plugin can call header() later without errors.
@@ -71,7 +81,10 @@ function http2_resource_hints() {
 	});
 
 }
-add_action( 'wp_head', 'http2_resource_hints', 99, 1);
+
+if(http2_should_render_prefetch_headers()) {
+	add_action( 'wp_head', 'http2_resource_hints', 99, 1);
+}
 
 /**
  * Convert an URL with authority to a relative path

@@ -7,6 +7,17 @@ output tags directly in the page markup won't be affected.
 
 Tested with [nghttpx](https://nghttp2.org/documentation/nghttpx-howto.html) and [h2o](https://h2o.examp1e.net). LiteSpeed and OpenLiteSpeed do not currently support server push, but this plugin is expected to work seamlessly once they support this feature.
 
+## WordPress 4.6 and above
+WordPress 4.6 introduced [native support for resource hints](https://make.wordpress.org/core/2016/07/06/resource-hints-in-4-6/).
+By default, this plugin defers to WordPress 4.6 and theme/plugin developers to responsibly prefetch the right assets. Sites running
+on older versions of WordPress will continue to get the previous behavior where all JavaScript and stylesheets had resource hints
+printed for them.
+
+I've added a filter To restore the old behavior (hint everything) on WordPress 4.6 and above. To use it, add this line to
+your theme's functions.php file or a custom plugin:
+
+`add_filter('http2_render_resource_hints', '__return_true');`
+
 ## License
 [MIT](http://daveross.mit-license.org/)
 

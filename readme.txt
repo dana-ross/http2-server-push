@@ -3,7 +3,7 @@ Contributors: csixty4
 Donate link: http://www.giffordcatshelter.org/
 Tags: http2, performance, prefetch
 Requires at least: 3.0
-Tested up to: 4.5.1
+Tested up to: 4.6
 Stable tag: 1.2
 License: MIT
 License URI: http://daveross.mit-license.org/
@@ -17,6 +17,17 @@ HTTP/2 is the new generation of the venerable HTTP protocol that powers the web.
 This plugin enables WordPress to send a ```Link:<...> rel="prefetch"``` header for every enqueued script and style as WordPress outputs them into the page source. Unfortunately, it can't help plugins and themes that output their scripts directly into the page itself, but these will continue to work as they always have.
 
 Requires a web server that supports HTTP/2.
+
+=== WordPress 4.6 and above ===
+WordPress 4.6 introduced [native support for resource hints](https://make.wordpress.org/core/2016/07/06/resource-hints-in-4-6/).
+By default, this plugin defers to WordPress 4.6 and theme/plugin developers to responsibly prefetch the right assets. Sites running
+on older versions of WordPress will continue to get the previous behavior where all JavaScript and stylesheets had resource hints
+printed for them.
+
+I've added a filter To restore the old behavior (hint everything) on WordPress 4.6 and above. To use it, add this line to
+your theme's functions.php file or a custom plugin:
+
+```add_filter('http2_render_resource_hints', '__return_true');```
 
 == Installation ==
 
@@ -58,4 +69,14 @@ The source code is available at [https://github.com/daveross/http2-server-push](
 * Implemented "resource hints" to encourage preload/prefetch behavior when HTTP/2 support is lacking.
 * Fixed 'as' value to match latest W3C specs
 
+= 1.3 =
+* Doesn't render resource hints when WordPress native support is present.
+
 == Upgrade Notice ==
+
+= 1.3 =
+WordPress 4.6 introduced native support for resource hints and this plugin no longer generates them. To restore the old behavior 
+(hint everything) on WordPress 4.6 and above, add this line to
+your theme's functions.php file or a custom plugin:
+
+```add_filter('http2_render_resource_hints', '__return_true');```
