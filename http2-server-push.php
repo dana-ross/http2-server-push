@@ -65,8 +65,10 @@ function http2_link_preload_header($src) {
     return $src;
 }
 
-add_filter('script_loader_src', 'http2_link_preload_header', 99, 1);
-add_filter('style_loader_src', 'http2_link_preload_header', 99, 1);
+if(!is_admin()) {
+	add_filter('script_loader_src', 'http2_link_preload_header', 99, 1);
+	add_filter('style_loader_src', 'http2_link_preload_header', 99, 1);
+}
 
 /**
  * Render "resource hints" in the <head> section of the page. These encourage preload/prefetch behavior
@@ -82,7 +84,7 @@ function http2_resource_hints() {
 
 }
 
-if(http2_should_render_prefetch_headers()) {
+if(!is_admin() && http2_should_render_prefetch_headers()) {
 	add_action( 'wp_head', 'http2_resource_hints', 99, 1);
 }
 

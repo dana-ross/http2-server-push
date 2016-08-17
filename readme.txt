@@ -70,7 +70,9 @@ The source code is available at [https://github.com/daveross/http2-server-push](
 * Fixed 'as' value to match latest W3C specs
 
 = 1.3 =
-* Doesn't render resource hints when WordPress native support is present.
+* Doesn't render resource hints when WordPress native support is present
+* No longer pushes assets on admin pages
+
 
 == Upgrade Notice ==
 
