@@ -14,6 +14,13 @@ $http2_script_srcs = array();
 $http2_stylesheet_srcs = array();
 
 /**
+ * Cloudflare gives an HTTP 520 error when more than 8k of headers are present. Limiting $this
+ * plugin's output to 4k should keep those errors away.
+ */
+define('HTTP2_MAX_HEADER_SIZE', 1024 * 4);
+$http2_header_size_accumulator = 0;
+
+/**
  * Determine if the plugin should render its own resource hints, or defer to WordPress.
  * WordPress natively supports resource hints since 4.6. Can be overridden with
  * 'http2_render_resource_hints' filter.
@@ -41,20 +48,26 @@ add_action('init', 'http2_ob_start');
  */
 function http2_link_preload_header($src) {
 
+	global $http2_header_size_accumulator;
+
     if (strpos($src, home_url()) !== false) {
 
         $preload_src = apply_filters('http2_link_preload_src', $src);
 
         if (!empty($preload_src)) {
 
-			header(
-				sprintf(
-					'Link: <%s>; rel=preload; as=%s',
-					esc_url( http2_link_url_to_relative_path( $preload_src ) ),
-					sanitize_html_class( http2_link_resource_hint_as( current_filter() ) )
-				)
-				, false
+			$header = sprintf(
+				'Link: <%s>; rel=preload; as=%s',
+				esc_url( http2_link_url_to_relative_path( $preload_src ) ),
+				sanitize_html_class( http2_link_resource_hint_as( current_filter() ) )
 			);
+
+			// Make sure we haven't hit the header limit
+			if(($http2_header_size_accumulator + strlen($header)) < HTTP2_MAX_HEADER_SIZE) {
+				$http2_header_size_accumulator += strlen($header);
+				header( $header, false );
+			}
+			
 			
 			$GLOBALS['http2_' . http2_link_resource_hint_as( current_filter() ) . '_srcs'][] = http2_link_url_to_relative_path( $preload_src );
 		
