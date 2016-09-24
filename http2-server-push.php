@@ -90,7 +90,7 @@ if(!is_admin()) {
 function http2_resource_hints() {
 	$resource_types = array('script', 'style');
 	array_walk( $resource_types, function( $resource_type ) {
-		array_walk( $GLOBALS["http2_{$resource_type}_srcs"], function( $src ) use ( $resource_type ) {
+		array_walk( http2_get_resources($GLOBALS, $resource_type), function( $src ) use ( $resource_type ) {
 			printf( '<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html( $resource_type ) );
 		});	
 	});
@@ -99,6 +99,30 @@ function http2_resource_hints() {
 
 if(!is_admin() && http2_should_render_prefetch_headers()) {
 	add_action( 'wp_head', 'http2_resource_hints', 99, 1);
+}
+
+/**
+ * Get resources of a certain type that have been enqueued through the WordPress API.
+ * Needed because some plugins mangle these global values
+ * @param array $globals the $GLOBALS array
+ * @param string $resource_type resource type (script, style)
+ * @return array
+ */
+function http2_get_resources($globals = null, $resource_type) {
+
+	$globals = (null === $globals) ? $GLOBALS : $globals;
+	$resource_type_key = "http2_{$resource_type}_srcs";
+	
+	if(!(is_array($globals) && array_key_exists($globals[$resource_type_key]))) {
+		return array();
+	}
+	else if(!is_array($globals[$resource_type_key])) {
+		return array($globals[$resource_type_key]);
+	}
+	else {
+		return $globals[$resource_type_key];
+	}
+
 }
 
 /**
