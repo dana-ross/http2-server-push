@@ -114,7 +114,7 @@ function http2_get_resources($globals = null, $resource_type) {
 	$globals = (null === $globals) ? $GLOBALS : $globals;
 	$resource_type_key = "http2_{$resource_type}_srcs";
 	
-	if(!(is_array($globals) && array_key_exists($globals[$resource_type_key]))) {
+	if(!(is_array($globals) && isset($globals[$resource_type_key]))) {
 		return array();
 	}
 	else if(!is_array($globals[$resource_type_key])) {
