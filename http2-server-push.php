@@ -92,7 +92,7 @@ function http2_resource_hints() {
 	array_walk( $resource_types, function( $resource_type ) {
 		$resources = http2_get_resources($GLOBALS, $resource_type);
 		array_walk( $resources, function( $src ) use ( $resource_type ) {
-			printf( '<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html( $resource_type ) );
+			printf( '<link rel="preload" href="%s" as="%s">', esc_url($src), esc_html( $resource_type ) );
 		});	
 	});
 
