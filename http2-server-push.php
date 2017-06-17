@@ -46,15 +46,17 @@ add_action('init', 'http2_ob_start');
  *
  * @return void
  */
-function http2_link_preload_header($src) {
+function http2_link_preload_header($src, $handle) {
 
-	global $http2_header_size_accumulator;
+	global $http2_header_size_accumulator, $wp_scripts;
+	
+	$obj = $wp_scripts->registered[$handle];
 
-    if (strpos($src, home_url()) !== false) {
+	if ( strpos($src, home_url()) !== false && !isset( $obj->extra['conditional'] ) ) {
 
-        $preload_src = apply_filters('http2_link_preload_src', $src);
+		$preload_src = apply_filters('http2_link_preload_src', $src);
 
-        if (!empty($preload_src)) {
+		if (!empty($preload_src)) {
 
 			$header = sprintf(
 				'Link: <%s>; rel=preload; as=%s',
@@ -73,14 +75,14 @@ function http2_link_preload_header($src) {
 		
 		}
 
-    }
+	}
 
-    return $src;
+	return $src;
 }
 
 if(!is_admin()) {
-	add_filter('script_loader_src', 'http2_link_preload_header', 99, 1);
-	add_filter('style_loader_src', 'http2_link_preload_header', 99, 1);
+	add_filter('script_loader_src', 'http2_link_preload_header', 99, 2);
+	add_filter('style_loader_src', 'http2_link_preload_header', 99, 2);
 }
 
 /**
