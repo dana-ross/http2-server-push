@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /*
 Plugin Name: HTTP/2 Server Push
@@ -11,7 +11,7 @@ Author URI:  http://davidmichaelross.com
 
 // Global variables to keep track of resource URLs
 $http2_script_srcs = array();
-$http2_stylesheet_srcs = array();
+$http2_style_srcs = array();
 
 /**
  * Cloudflare gives an HTTP 520 error when more than 8k of headers are present. Limiting $this
@@ -43,44 +43,53 @@ add_action('init', 'http2_ob_start');
 
 /**
  * @param string $src URL
+ * @param string $handle source handle
  *
- * @return void
+ * @return string $src
  */
-function http2_link_preload_header($src) {
+function http2_link_preload_header( $src, $handle ) {
 
-	global $http2_header_size_accumulator;
+	global $http2_header_size_accumulator, $wp_scripts, $wp_styles;
 
-    if (strpos($src, home_url()) !== false) {
+	// abort for non-local sources
+	if ( strpos($src, home_url()) === false ) return $src;
 
-        $preload_src = apply_filters('http2_link_preload_src', $src);
+	if ( 'style_loader_src' === current_filter() ) {
+		$_as = 'style';
+		$obj = $wp_styles->registered[$handle];
+	} else {
+		$_as = 'script';
+		$obj = $wp_scripts->registered[$handle];
+	}
 
-        if (!empty($preload_src)) {
+	// abort for sources with conditionals set
+	if ( isset( $obj->extra['conditional'] ) ) return $src;
 
-			$header = sprintf(
-				'Link: <%s>; rel=preload; as=%s',
-				esc_url( http2_link_url_to_relative_path( $preload_src ) ),
-				sanitize_html_class( http2_link_resource_hint_as( current_filter() ) )
-			);
+	$preload_src = apply_filters('http2_link_preload_src', $src);
 
-			// Make sure we haven't hit the header limit
-			if(($http2_header_size_accumulator + strlen($header)) < HTTP2_MAX_HEADER_SIZE) {
-				$http2_header_size_accumulator += strlen($header);
-				header( $header, false );
-			}
-			
-			
-			$GLOBALS['http2_' . http2_link_resource_hint_as( current_filter() ) . '_srcs'][] = http2_link_url_to_relative_path( $preload_src );
-		
+	if ( !empty($preload_src) ) {
+
+		$header = sprintf (
+			'Link: <%s>; rel=preload; as=%s',
+			esc_url( http2_link_url_to_relative_path( $preload_src ) ),
+			sanitize_html_class( $_as )
+		);
+
+		// Make sure we haven't hit the header limit
+		if(($http2_header_size_accumulator + strlen($header)) < HTTP2_MAX_HEADER_SIZE) {
+			$http2_header_size_accumulator += strlen($header);
+			header( $header, false );
 		}
 
-    }
+		$GLOBALS['http2_' . $_as . '_srcs'][] = http2_link_url_to_relative_path( $preload_src );
+	}
 
-    return $src;
+	return $src;
 }
 
 if(!is_admin()) {
-	add_filter('script_loader_src', 'http2_link_preload_header', 99, 1);
-	add_filter('style_loader_src', 'http2_link_preload_header', 99, 1);
+	add_filter('script_loader_src', 'http2_link_preload_header', 99, 2);
+	add_filter('style_loader_src', 'http2_link_preload_header', 99, 2);
 }
 
 /**
@@ -93,7 +102,7 @@ function http2_resource_hints() {
 		$resources = http2_get_resources($GLOBALS, $resource_type);
 		array_walk( $resources, function( $src ) use ( $resource_type ) {
 			printf( '<link rel="preload" href="%s" as="%s">', esc_url($src), esc_html( $resource_type ) );
-		});	
+		});
 	});
 
 }
@@ -113,7 +122,7 @@ function http2_get_resources($globals = null, $resource_type) {
 
 	$globals = (null === $globals) ? $GLOBALS : $globals;
 	$resource_type_key = "http2_{$resource_type}_srcs";
-	
+
 	if(!(is_array($globals) && isset($globals[$resource_type_key]))) {
 		return array();
 	}
@@ -135,15 +144,4 @@ function http2_get_resources($globals = null, $resource_type) {
  */
 function http2_link_url_to_relative_path($src) {
     return '//' === substr($src, 0, 2) ? preg_replace('/^\/\/([^\/]*)\//', '/', $src) : preg_replace('/^http(s)?:\/\/[^\/]*/', '', $src);
-}
-
-/**
- * Maps a WordPress hook to an "as" parameter in a resource hint
- *
- * @param string $current_hook pass current_filter()
- *
- * @return string 'style' or 'script'
- */
-function http2_link_resource_hint_as( $current_hook ) {
-	return 'style_loader_src' === $current_hook ? 'style' : 'script';
 }
