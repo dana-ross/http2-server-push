@@ -3,8 +3,8 @@ Contributors: csixty4
 Donate link: http://www.giffordcatshelter.org/
 Tags: http2, performance, prefetch
 Requires at least: 3.0
-Tested up to: 4.6
-Stable tag: 1.2
+Tested up to: 4.9.4
+Stable tag: 1.4
 License: MIT
 License URI: http://daveross.mit-license.org/
 
