@@ -50,7 +50,7 @@ function http2_link_preload_header($src) {
 
 	global $http2_header_size_accumulator;
 
-    if (strpos($src, home_url()) !== false) {
+    if (strpos($src, site_url()) !== false) {
 
         $preload_src = apply_filters('http2_link_preload_src', $src);
 
