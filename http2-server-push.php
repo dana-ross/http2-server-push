@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /*
 Plugin Name: HTTP/2 Server Push
@@ -50,7 +50,9 @@ function http2_link_preload_header($src) {
 
 	global $http2_header_size_accumulator;
 
-    if (strpos($src, site_url()) !== false) {
+	$host = parse_url(home_url(), PHP_URL_HOST);
+
+    if (strpos($host, $host) !== false) {
 
         $preload_src = apply_filters('http2_link_preload_src', $src);
 
@@ -67,10 +69,10 @@ function http2_link_preload_header($src) {
 				$http2_header_size_accumulator += strlen($header);
 				header( $header, false );
 			}
-			
-			
+
+
 			$GLOBALS['http2_' . http2_link_resource_hint_as( current_filter() ) . '_srcs'][] = http2_link_url_to_relative_path( $preload_src );
-		
+
 		}
 
     }
@@ -93,7 +95,7 @@ function http2_resource_hints() {
 		$resources = http2_get_resources($GLOBALS, $resource_type);
 		array_walk( $resources, function( $src ) use ( $resource_type ) {
 			printf( '<link rel="preload" href="%s" as="%s">', esc_url($src), esc_html( $resource_type ) );
-		});	
+		});
 	});
 
 }
@@ -113,7 +115,7 @@ function http2_get_resources($globals = null, $resource_type) {
 
 	$globals = (null === $globals) ? $GLOBALS : $globals;
 	$resource_type_key = "http2_{$resource_type}_srcs";
-	
+
 	if(!(is_array($globals) && isset($globals[$resource_type_key]))) {
 		return array();
 	}
